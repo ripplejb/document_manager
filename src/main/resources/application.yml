@@ -1,0 +1,81 @@
+micronaut:
+  application:
+    name: document_manager
+  security:
+    enabled: true
+    endpoints:
+      login:
+        enabled: true
+      logout:
+        enabled: true
+      keys:
+        enabled: true
+    token:
+      jwt:
+        enabled: true
+        signatures:
+          secret:
+            generator:
+              secret: eiRDJkYpSEBNY1FmVGpXblpyNHU3eCFBJUQqRy1LYU4=
+              base64: true
+              jws-algorithm: HS256
+      roles-name: 'scopes'
+
+# Define user roles.
+# Scope format: <tag>:resource.access-level
+# Tag is determines level of access.
+# Scope without tag means, the user cannot
+# access the resources owned by others.
+user-roles:
+  executive:
+    scopes:
+      - 'admin:document.readonly'
+  manager:
+    scopes:
+      - 'manager:document.readonly'
+      - 'manager:document.update'
+  creator:
+    scopes:
+      - 'creator:document.full'
+
+# Define authorization policies
+# Each policy contains a list of scopes.
+# If the token contains any one of the
+# scope from the list and the user in
+# token is allowed to access resources
+# of the user in the request,
+# the request is authorized.
+authorization-policies:
+  document-readonly:
+    scopes:
+      - 'admin:document.readonly'
+      - 'manager:document.readonly'
+      - 'creator:document.full'
+  document-update:
+    scopes:
+      - 'manager:document.update'
+      - 'creator:document.full'
+  document-create:
+    scopes:
+      - 'creator:document.full'
+
+datasources:
+  default:
+    url: jdbc:h2:mem:devDb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    schema-generate: CREATE_DROP
+    dialect: H2
+
+jpa:
+  entity-scan:
+    packages: 'com.example.models'
+  default:
+    properties:
+      hibernate:
+        bytecode:
+          provider: none
+        hbm2ddl:
+          auto: update
+        show_sql: true

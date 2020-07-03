@@ -18,15 +18,27 @@ import java.util.stream.Stream;
 public class PolicyEnforcer implements Enforcer {
 
   private static final String JWT_SCOPES_KEY = "scopes";
+  private static final String DENY_ALL = "deny-all";
+  private static final String ALLOW_ALL = "allow-all";
+
+
   @Inject private List<AuthorizationPolicy> policies;
   @Inject private Stream<TagEnforcer> tagEnforcers;
 
   @Override
   public SecurityRuleResult IsValid(
       HttpRequest request, Map<String, Object> claims, String policyName) {
-    if (claims.containsKey(JWT_SCOPES_KEY)) {
+    List<String> policyScopes = getPolicyScopes(policyName);
 
-      List<String> policyScopes = getPolicyScopes(policyName);
+    if (IsAllowAll(policyScopes)) {
+      return SecurityRuleResult.ALLOWED;
+    }
+
+    if (IsDenyAll(policyScopes)) {
+      return SecurityRuleResult.REJECTED;
+    }
+
+    if (claims.containsKey(JWT_SCOPES_KEY)) {
 
       List<String> jwtScopes = getJWTScopes(claims);
 
@@ -44,6 +56,14 @@ public class PolicyEnforcer implements Enforcer {
     }
 
     return SecurityRuleResult.REJECTED;
+  }
+
+  private Boolean IsDenyAll(List<String> jwtScopes) {
+    return jwtScopes.get(0).equals(DENY_ALL);
+  }
+
+  private Boolean IsAllowAll(List<String> jwtScopes) {
+    return jwtScopes.get(0).equals(ALLOW_ALL);
   }
 
   private List<String> getJWTScopes(Map<String, Object> claims) {

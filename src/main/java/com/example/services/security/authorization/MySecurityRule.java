@@ -24,10 +24,6 @@ public class MySecurityRule implements SecurityRule {
   @Named("policy")
   private Enforcer enforcer;
 
-  private static final String DENY_ALL = "deny-all";
-  private static final String ALLOW_ALL = "allow-all";
-
-
   /**
    * Returns a security result based on any conditions.
    *
@@ -48,16 +44,6 @@ public class MySecurityRule implements SecurityRule {
         Optional<String> optionalValue = methodRoute.getValue(SecurityPolicy.class, String.class);
         if (optionalValue.isPresent()) {
           String policyName = optionalValue.get();
-          if (policyName.contains(DENY_ALL)) {
-            return SecurityRuleResult.REJECTED;
-          }
-          if (policyName.contains(ALLOW_ALL)) {
-            return SecurityRuleResult.ALLOWED;
-          }
-          if (claims == null) {
-            return SecurityRuleResult.REJECTED;
-          }
-
           return enforcer.IsValid(request, claims, policyName);
         }
       }

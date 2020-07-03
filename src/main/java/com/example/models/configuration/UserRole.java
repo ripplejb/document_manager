@@ -1,6 +1,7 @@
 package com.example.models.configuration;
 
 import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.context.annotation.Parameter;
 
 import java.util.List;
 
@@ -8,6 +9,10 @@ import java.util.List;
 public class UserRole {
   private String name;
   private List<String> scopes;
+
+  public UserRole(@Parameter String name) {
+    this.name = name;
+  }
 
   public String getName() {
     return name;

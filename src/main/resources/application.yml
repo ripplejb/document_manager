@@ -58,6 +58,13 @@ authorization-policies:
   document-create:
     scopes:
       - 'creator:document.full'
+  employee-create:
+    scopes:
+      - 'allow-all'
+  # Deny All example. it is not used.
+  employee-search:
+    scopes:
+      - 'deny-all'
 
 datasources:
   default:

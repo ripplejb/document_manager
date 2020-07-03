@@ -1,0 +1,42 @@
+POST http://localhost:8080/employees HTTP/1.1
+Content-Type: application/json
+
+{
+  "name":"Ripal Barot",
+  "designation": "executive",
+  "username": "ripplejb",
+  "password": "strongPassword"
+}
+
+###
+
+POST http://localhost:8080/employees HTTP/1.1
+Content-Type: application/json
+
+{
+  "name":"Ripal Manager",
+  "designation": "manager",
+  "username": "ripple-manager",
+  "password": "strongPassword"
+}
+
+###
+
+POST http://localhost:8080/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "ripplejb",
+  "password": "strongPassword"
+}
+
+###
+
+POST http://localhost:8080/departments HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3MzMzMzQwMS0wYzU3LTQzZDUtYTllMC1hOTUzZjI1NWVmMDUiLCJuYmYiOjE1OTM3NzM5MDksImlzcyI6ImRvY3VtZW50LW1hbmFnZXIiLCJzY29wZXMiOlsiZXhlY3V0aXZlOmRvY3VtZW50LnJlYWRvbmx5IiwiZXhlY3V0aXZlOmRlcGFydG1lbnQuY3JlYXRlIl0sImRlc2lnbmF0aW9uIjoiZXhlY3V0aXZlIiwiZXhwIjoxNTkzNzc3NTA5LCJpYXQiOjE1OTM3NzM5MDl9.EJvW1DVB6L0Rn_dv58pIBqsg2T-4Ykbkhh_rgV83LWU
+
+{
+  "name": "Finance",
+  "managerId": "f69b8a99-2bc0-47a5-a834-f71f1ceee06c"
+}

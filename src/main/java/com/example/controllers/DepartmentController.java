@@ -1,8 +1,7 @@
 package com.example.controllers;
 
-import com.example.models.dto.EmployeeDto;
-import com.example.models.dto.EmployeeRegistrationDto;
-import com.example.services.employee.EmployeeService;
+import com.example.models.dto.DepartmentDto;
+import com.example.services.department.DepartmentService;
 import com.example.services.security.authorization.SecurityPolicy;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -12,16 +11,16 @@ import io.reactivex.Single;
 
 import javax.inject.Inject;
 
-@Controller("employees")
-public class EmployeeController {
+@Controller("departments")
+public class DepartmentController {
 
   @Inject
-  private EmployeeService employeeService;
+  private DepartmentService departmentService;
 
-  @SecurityPolicy("employee-create")
+  @SecurityPolicy("department-create")
   @Post(consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
-  Single<HttpResponse<EmployeeDto>> post(EmployeeRegistrationDto employeeRegistrationDto) {
-    return employeeService.createNewEmployee(employeeRegistrationDto)
+  public Single<HttpResponse<DepartmentDto>> post(DepartmentDto departmentDto) {
+    return departmentService.createNewDepartment(departmentDto)
         .map(HttpResponse::ok);
   }
 

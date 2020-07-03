@@ -29,7 +29,8 @@ micronaut:
 user-roles:
   executive:
     scopes:
-      - 'admin:document.readonly'
+      - 'executive:document.readonly'
+      - 'executive:department.create'
   manager:
     scopes:
       - 'manager:document.readonly'
@@ -48,7 +49,7 @@ user-roles:
 authorization-policies:
   document-readonly:
     scopes:
-      - 'admin:document.readonly'
+      - 'executive:document.readonly'
       - 'manager:document.readonly'
       - 'creator:document.full'
   document-update:
@@ -65,6 +66,9 @@ authorization-policies:
   employee-search:
     scopes:
       - 'deny-all'
+  department-create:
+    scopes:
+      - 'executive:department.create'
 
 datasources:
   default:

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Singleton
 public class PolicyEnforcer implements Enforcer {
@@ -23,7 +22,7 @@ public class PolicyEnforcer implements Enforcer {
 
 
   @Inject private List<AuthorizationPolicy> policies;
-  @Inject private Stream<TagEnforcer> tagEnforcers;
+  @Inject private List<TagEnforcer> tagEnforcers;
 
   @Override
   public SecurityRuleResult IsValid(
@@ -36,6 +35,10 @@ public class PolicyEnforcer implements Enforcer {
 
     if (IsDenyAll(policyScopes)) {
       return SecurityRuleResult.REJECTED;
+    }
+
+    if (claims == null) {
+      return SecurityRuleResult.UNKNOWN;
     }
 
     if (claims.containsKey(JWT_SCOPES_KEY)) {
@@ -94,7 +97,7 @@ public class PolicyEnforcer implements Enforcer {
 
   private Optional<TagEnforcer> getTagEnforcer(String tag) {
     String finalTag = tag;
-    return tagEnforcers
+    return tagEnforcers.stream()
         .filter(tagEnforcer -> tagEnforcer.getClass().getName().startsWith(finalTag))
         .findFirst();
   }

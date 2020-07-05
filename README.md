@@ -58,7 +58,7 @@ authorization-policies:
       - 'executive:department.create'
 ```
 
-The JWT token of the signed-in user contains a list of scope belongs to the user's role.
+The JWT token of the signed-in user contains a list of scopes belongs to the user's role.
 One or zero scope match with a scope in policy mentioned in the [SecurityPolicy](https://github.com/ripplejb/document_manager/blob/master/src/main/java/com/example/services/security/authorization/SecurityPolicy.java) annotation. If the match found, we call the [PolicyEnforcer](https://github.com/ripplejb/document_manager/blob/master/src/main/java/com/example/services/security/authorization/enforcers/PolicyEnforcer.java). The [PolicyEnforcer](https://github.com/ripplejb/document_manager/blob/master/src/main/java/com/example/services/security/authorization/enforcers/PolicyEnforcer.java) validates the scope privileges and then calls the [TagEnforcer](https://github.com/ripplejb/document_manager/blob/master/src/main/java/com/example/services/security/authorization/enforcers/tags/TagEnforcer.java). The [TagEnforcer](https://github.com/ripplejb/document_manager/blob/master/src/main/java/com/example/services/security/authorization/enforcers/tags/TagEnforcer.java) validates the tag by checking against the employee or the department id in the request.
 
 #### Authorization UML

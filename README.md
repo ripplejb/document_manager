@@ -6,7 +6,7 @@ Here we have implemented a scalable Security Policy by implementing custom [Secu
 We defined scopes for each user role and security policy. The format of a scope is **Tag**:**Privilege**.
 
 ##### Tag
-The tag indicates limit of resource that a user can access or perform action on. For example, **document.read** with **executive** tag can read any document from any department. However, *manager* can view document from only the department (s)he belong to.
+The tag indicates limit of resource that a user can access or perform action on. For example, **executive**:**document.read** can view any document from any department. However, **manager**:**document.read** can view document from only the department (s)he belong to.
 
 ##### Privilege
 The privilege part of scope indicate that if the user can access or perform action on certain resources or not.  

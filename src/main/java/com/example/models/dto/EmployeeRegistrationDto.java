@@ -1,7 +1,10 @@
 package com.example.models.dto;
 
+import io.micronaut.core.annotation.Introspected;
+
 import java.util.UUID;
 
+@Introspected
 public class EmployeeRegistrationDto {
   private UUID id;
   private String name;

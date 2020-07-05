@@ -13,6 +13,9 @@ public class DocumentMapperImpl implements DocumentMapper {
   @Override
   public Document fromDocumentDto(DocumentDto documentDto) {
     Document document = new Document();
+    if (documentDto == null) {
+      return document;
+    }
     document.setContent(documentDto.getContent());
     document.setId(documentDto.getId());
     document.setTitle(documentDto.getTitle());
@@ -30,6 +33,9 @@ public class DocumentMapperImpl implements DocumentMapper {
   @Override
   public DocumentDto toDocumentDto(Document document) {
     DocumentDto documentDto = new DocumentDto();
+    if (document == null) {
+      return documentDto;
+    }
     documentDto.setContent(document.getContent());
     documentDto.setTitle(document.getTitle());
     documentDto.setId(document.getId());

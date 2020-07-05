@@ -9,6 +9,7 @@ import io.micronaut.security.rules.SecurityRuleResult;
 
 import javax.inject.Singleton;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Singleton
@@ -41,7 +42,7 @@ public class ManagerTagEnforcer implements TagEnforcer {
   private SecurityRuleResult validateRequestUrlQuery(
       HttpRequest request, Map<String, Object> claims) {
     if (request.getParameters().contains(DEPARTMENT_ID)) {
-      UUID creatorId = UUID.fromString(request.getParameters().asMap().get(DEPARTMENT_ID).toString());
+      UUID creatorId = UUID.fromString(request.getParameters().asMap(String.class, String.class).get(DEPARTMENT_ID));
       if (creatorId.equals(UUID.fromString(claims.get(SUBJECT_ID).toString()))) {
         return SecurityRuleResult.ALLOWED;
       }
@@ -60,10 +61,13 @@ public class ManagerTagEnforcer implements TagEnforcer {
       }
       UUID creatorId = UUID.fromString(claims.get(SUBJECT_ID).toString());
 
-      String body = request.getBody().toString();
+      Optional<String> body = request.getBody(String.class);
+      if (body.isEmpty()) {
+        return SecurityRuleResult.UNKNOWN;
+      }
       ObjectMapper objectMapper = new ObjectMapper();
       try {
-        JsonNode jsonNode = objectMapper.readTree(body);
+        JsonNode jsonNode = objectMapper.readTree(body.get());
         if (creatorId.equals(UUID.fromString(jsonNode.get(DEPARTMENT_ID).asText()))) {
           return SecurityRuleResult.ALLOWED;
         }

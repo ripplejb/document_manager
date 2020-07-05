@@ -29,11 +29,11 @@ micronaut:
 user-roles:
   executive:
     scopes:
-      - 'executive:document.readonly'
+      - 'executive:document.read'
       - 'executive:department.create'
   manager:
     scopes:
-      - 'manager:document.readonly'
+      - 'manager:document.read'
       - 'manager:document.update'
   creator:
     scopes:
@@ -47,10 +47,10 @@ user-roles:
 # of the user in the request,
 # the request is authorized.
 authorization-policies:
-  document-readonly:
+  document-read:
     scopes:
-      - 'executive:document.readonly'
-      - 'manager:document.readonly'
+      - 'executive:document.read'
+      - 'manager:document.read'
       - 'creator:document.full'
   document-update:
     scopes:

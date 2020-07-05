@@ -98,7 +98,7 @@ public class PolicyEnforcer implements Enforcer {
   private Optional<TagEnforcer> getTagEnforcer(String tag) {
     String finalTag = tag;
     return tagEnforcers.stream()
-        .filter(tagEnforcer -> tagEnforcer.getClass().getName().startsWith(finalTag))
+        .filter(tagEnforcer -> tagEnforcer.getClass().getSimpleName().toLowerCase().startsWith(finalTag.toLowerCase()))
         .findFirst();
   }
 

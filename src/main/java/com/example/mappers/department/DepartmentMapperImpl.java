@@ -11,6 +11,9 @@ public class DepartmentMapperImpl implements DepartmentMapper{
   @Override
   public DepartmentDto fromDepartment(Department department) {
     DepartmentDto departmentDto = new DepartmentDto();
+    if (department == null) {
+      return departmentDto;
+    }
     departmentDto.setId(department.getId());
     departmentDto.setManagerId(department.getManager().getId());
     departmentDto.setName(department.getName());
@@ -20,6 +23,9 @@ public class DepartmentMapperImpl implements DepartmentMapper{
   @Override
   public Department toDepartment(DepartmentDto departmentDto) {
     Department department = new Department();
+    if (departmentDto == null) {
+      return department;
+    }
     department.setId(departmentDto.getId());
     department.setName(departmentDto.getName());
 

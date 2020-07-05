@@ -12,6 +12,7 @@ import io.micronaut.security.token.jwt.generator.claims.JWTClaimsSetGenerator;
 import io.micronaut.security.token.jwt.generator.claims.JwtIdGenerator;
 
 import javax.inject.Singleton;
+import java.util.Map;
 
 @Singleton
 @Replaces(bean = JWTClaimsSetGenerator.class)
@@ -44,7 +45,9 @@ public class CustomJWTClaimsGenerator extends JWTClaimsSetGenerator {
   protected void populateWithUserDetails(JWTClaimsSet.Builder builder, UserDetails userDetails) {
     super.populateWithUserDetails(builder, userDetails);
     if (userDetails instanceof EmployeeUserDetails) {
-      builder.claim("designation", ((EmployeeUserDetails) userDetails).getDesignation());
+      for (Map.Entry<String, Object> entry: ((EmployeeUserDetails) userDetails).getClaims().entrySet()) {
+        builder.claim(entry.getKey(), entry.getValue());
+      }
     }
   }
 }

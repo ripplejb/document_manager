@@ -9,6 +9,7 @@ import io.micronaut.security.rules.SecurityRuleResult;
 
 import javax.inject.Singleton;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Singleton
@@ -60,10 +61,13 @@ public class CreatorTagEnforcer implements TagEnforcer {
       }
       UUID creatorId = UUID.fromString(claims.get(SUBJECT_ID).toString());
 
-      String body = request.getBody().toString();
+      Optional<String> body = request.getBody(String.class);
+      if (body.isEmpty()) {
+        return SecurityRuleResult.UNKNOWN;
+      }
       ObjectMapper objectMapper = new ObjectMapper();
       try {
-        JsonNode jsonNode = objectMapper.readTree(body);
+        JsonNode jsonNode = objectMapper.readTree(body.get());
         if (creatorId.equals(UUID.fromString(jsonNode.get(CREATOR_ID).asText()))) {
           return SecurityRuleResult.ALLOWED;
         }

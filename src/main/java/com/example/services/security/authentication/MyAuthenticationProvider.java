@@ -13,9 +13,7 @@ import org.reactivestreams.Publisher;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Singleton
 public class MyAuthenticationProvider implements AuthenticationProvider {
@@ -89,7 +87,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
   private EmployeeUserDetails getEmployeeUserDetails(UUID userDetailId, Employee employee, UserRole userRole) {
     EmployeeUserDetails employeeUserDetails = new EmployeeUserDetails(userDetailId.toString(),
         userRole.getScopes());
-    employeeUserDetails.setDesignation(employee.getDesignation());
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("designation", employee.getDesignation());
+    employeeUserDetails.setClaims(claims);
     return employeeUserDetails;
   }
 }

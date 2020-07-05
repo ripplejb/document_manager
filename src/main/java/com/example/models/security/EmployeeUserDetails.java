@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class EmployeeUserDetails extends UserDetails {
 
-  private String designation;
+  private Map<String, Object> claims;
 
   /**
    * @param username e.g. admin
@@ -26,11 +26,11 @@ public class EmployeeUserDetails extends UserDetails {
     super(username, scopes, attributes);
   }
 
-  public String getDesignation() {
-    return designation;
+  public Map<String, Object> getClaims() {
+    return claims;
   }
 
-  public void setDesignation(String designation) {
-    this.designation = designation;
+  public void setClaims(Map<String, Object> claims) {
+    this.claims = claims;
   }
 }

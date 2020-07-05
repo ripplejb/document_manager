@@ -19,15 +19,15 @@ public class DocumentServiceImpl implements DocumentService {
 
   @Override
   public Single<DocumentDto> createNewDocument(DocumentDto documentDto) {
-    return documentRepository
-        .save(documentMapper.fromDocumentDto(documentDto))
+    return Single.just(documentRepository
+        .save(documentMapper.fromDocumentDto(documentDto)))
         .map(document -> documentMapper.toDocumentDto(document));
   }
 
   @Override
   public Single<DocumentDto> updateDocument(DocumentDto documentDto) {
-    return documentRepository
-        .update(documentMapper.fromDocumentDto(documentDto))
+    return Single.just(documentRepository
+        .update(documentMapper.fromDocumentDto(documentDto)))
         .map(document -> documentMapper.toDocumentDto(document));
   }
 
@@ -35,24 +35,24 @@ public class DocumentServiceImpl implements DocumentService {
   public Flowable<DocumentDto> getDocuments(DocumentSearchRequest documentSearchRequest) {
     if (documentSearchRequest.getCreatorId() == null
         && documentSearchRequest.getDepartmentId() == null) {
-      return documentRepository
-          .findByTitleIlike("%" + documentSearchRequest.getTitle() + "%")
+      return Flowable.fromIterable(documentRepository
+          .findByTitleIlike("%" + documentSearchRequest.getTitle() + "%"))
           .map(document -> documentMapper.toDocumentDto(document));
     } else if (documentSearchRequest.getCreatorId() == null) {
-      return documentRepository
-          .findByTitleIlikeAndCreatorId("%" + documentSearchRequest.getTitle() + "%",
-              documentSearchRequest.getCreatorId())
+      return Flowable.fromIterable(documentRepository
+          .findByTitleIlikeAndDepartmentId("%" + documentSearchRequest.getTitle() + "%",
+              documentSearchRequest.getDepartmentId()))
           .map(document -> documentMapper.toDocumentDto(document));
     } else if (documentSearchRequest.getDepartmentId() == null) {
-      return documentRepository
-          .findByTitleIlikeAndDepartmentId("%" + documentSearchRequest.getTitle() + "%",
-              documentSearchRequest.getDepartmentId())
+      return Flowable.fromIterable(documentRepository
+          .findByTitleIlikeAndCreatorId("%" + documentSearchRequest.getTitle() + "%",
+              documentSearchRequest.getCreatorId()))
           .map(document -> documentMapper.toDocumentDto(document));
     } else {
-      return documentRepository
+      return Flowable.fromIterable(documentRepository
           .findByTitleIlikeAndDepartmentIdAndCreatorId(
               "%" + documentSearchRequest.getTitle() + "%",
-              documentSearchRequest.getDepartmentId(), documentSearchRequest.getCreatorId())
+              documentSearchRequest.getDepartmentId(), documentSearchRequest.getCreatorId()))
           .map(document -> documentMapper.toDocumentDto(document));
     }
   }

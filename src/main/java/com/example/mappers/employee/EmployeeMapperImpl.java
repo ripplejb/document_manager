@@ -11,6 +11,9 @@ public class EmployeeMapperImpl implements EmployeeMapper {
   @Override
   public EmployeeDto fromEmployee(Employee employee) {
     EmployeeDto employeeDto = new EmployeeDto();
+    if (employee == null) {
+      return employeeDto;
+    }
     employeeDto.setDesignation(employee.getDesignation());
     employeeDto.setName(employee.getName());
     employeeDto.setId(employee.getId());
@@ -20,6 +23,9 @@ public class EmployeeMapperImpl implements EmployeeMapper {
   @Override
   public Employee toEmployee(EmployeeRegistrationDto employeeRegistrationDto) {
     Employee employee = new Employee();
+    if (employeeRegistrationDto == null) {
+      return employee;
+    }
     employee.setId(employeeRegistrationDto.getId());
     employee.setDesignation(employeeRegistrationDto.getDesignation());
     employee.setName(employeeRegistrationDto.getName());

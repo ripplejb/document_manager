@@ -2,24 +2,24 @@ package com.example.dao;
 
 import com.example.models.entities.Document;
 import io.micronaut.data.annotation.Repository;
-import io.micronaut.data.repository.reactive.RxJavaCrudRepository;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
+import io.micronaut.data.repository.CrudRepository;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface DocumentRepository extends RxJavaCrudRepository<Document, UUID> {
-  Flowable<Document> findByTitleIlikeAndCreatorId(
-      String titleQueryCaseIgnored, UUID creatorId);
+public interface DocumentRepository extends CrudRepository<Document, UUID> {
+  List<Document> findByTitleIlikeAndCreatorId(
+      @Nullable String titleQueryCaseIgnored, @Nullable UUID creatorId);
 
-  Flowable<Document> findByTitleIlikeAndDepartmentId(
-      String titleQueryCaseIgnored, UUID departmentId);
+  List<Document> findByTitleIlikeAndDepartmentId(
+      @Nullable String titleQueryCaseIgnored, @Nullable UUID departmentId);
 
-  Flowable<Document> findByTitleIlikeAndDepartmentIdAndCreatorId(
-      String titleQueryCaseIgnored, UUID departmentId, UUID creatorId);
+  List<Document> findByTitleIlikeAndDepartmentIdAndCreatorId(
+      @Nullable String titleQueryCaseIgnored, @Nullable UUID departmentId, @Nullable UUID creatorId);
 
-  Flowable<Document> findByTitleIlike(String titleQueryCaseIgnored);
+  List<Document> findByTitleIlike(String titleQueryCaseIgnored);
 
-  Single<Document> update(Document document);
+  Document update(Document document);
 }

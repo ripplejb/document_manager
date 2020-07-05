@@ -1,6 +1,6 @@
 package com.example.services.security.authorization;
 
-import com.example.services.security.authorization.enforcers.Enforcer;
+import com.example.services.security.authorization.enforcers.PolicyEnforcer;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.rules.ConfigurationInterceptUrlMapRule;
@@ -22,7 +22,7 @@ public class SecurityPolicyAnnotationProcessor implements SecurityRule {
   private static final Integer ORDER = ConfigurationInterceptUrlMapRule.ORDER - 100;
   @Inject
   @Named("policy")
-  private Enforcer enforcer;
+  private PolicyEnforcer policyEnforcer;
 
   /**
    * Returns a security result based on any conditions.
@@ -44,7 +44,7 @@ public class SecurityPolicyAnnotationProcessor implements SecurityRule {
         Optional<String> optionalValue = methodRoute.getValue(SecurityPolicy.class, String.class);
         if (optionalValue.isPresent()) {
           String policyName = optionalValue.get();
-          return enforcer.IsValid(request, claims, policyName);
+          return policyEnforcer.IsValid(request, claims, policyName);
         }
       }
     }

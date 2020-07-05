@@ -5,7 +5,7 @@ import io.micronaut.security.rules.SecurityRuleResult;
 
 import java.util.Map;
 
-public interface CompareIdsForTag {
+public interface CompareIdsForSecurityTagHelper {
   SecurityRuleResult validateRequestUrlQuery(
       HttpRequest request, Map<String, Object> claims, String idType);
   SecurityRuleResult validateRequestBody(

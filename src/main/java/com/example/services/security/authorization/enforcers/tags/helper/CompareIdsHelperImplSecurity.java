@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Singleton
-public class CompareIdsHelperImpl implements CompareIdsForTag{
+public class CompareIdsHelperImplSecurity implements CompareIdsForSecurityTagHelper {
 
   private static final String SUBJECT_ID = "sub";
   private static final String DESIGNATION = "designation";

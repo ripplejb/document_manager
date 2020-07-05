@@ -1,6 +1,6 @@
 package com.example.services.security.authorization.enforcers.tags;
 
-import com.example.services.security.authorization.enforcers.tags.helper.CompareIdsForTag;
+import com.example.services.security.authorization.enforcers.tags.helper.CompareIdsForSecurityTagHelper;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.rules.SecurityRuleResult;
@@ -16,7 +16,7 @@ public class CreatorTagEnforcer implements TagEnforcer {
   private static final String CREATOR_ID = "creatorId";
 
   @Inject
-  private CompareIdsForTag compareIdsForTag;
+  private CompareIdsForSecurityTagHelper compareIdsForSecurityTagHelper;
 
   /**
    * The creator tag will check creator_id set in the JWT against the creator_id set in the body.
@@ -39,12 +39,12 @@ public class CreatorTagEnforcer implements TagEnforcer {
 
   private SecurityRuleResult validateRequestUrlQuery(
       HttpRequest request, Map<String, Object> claims) {
-    return compareIdsForTag.validateRequestUrlQuery(request, claims, CREATOR_ID);
+    return compareIdsForSecurityTagHelper.validateRequestUrlQuery(request, claims, CREATOR_ID);
   }
 
   private SecurityRuleResult validateRequestBody(
       HttpRequest request, Map<String, Object> claims) {
-    return compareIdsForTag.validateRequestBody(request, claims, CREATOR_ID, CREATOR);
+    return compareIdsForSecurityTagHelper.validateRequestBody(request, claims, CREATOR_ID, CREATOR);
   }
 
 }

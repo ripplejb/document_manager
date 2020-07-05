@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Singleton
-public class MySecurityRule implements SecurityRule {
+public class SecurityPolicyAnnotationProcessor implements SecurityRule {
 
   /** The order of the rule. */
   private static final Integer ORDER = ConfigurationInterceptUrlMapRule.ORDER - 100;

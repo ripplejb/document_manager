@@ -1,6 +1,6 @@
 package com.example.services.security.authorization.enforcers.tags;
 
-import com.example.services.security.authorization.enforcers.tags.helper.CompareIdsForTag;
+import com.example.services.security.authorization.enforcers.tags.helper.CompareIdsForSecurityTagHelper;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.rules.SecurityRuleResult;
@@ -16,7 +16,7 @@ public class ManagerTagEnforcer implements TagEnforcer {
   private static final String DEPARTMENT_ID = "departmentId";
 
   @Inject
-  private CompareIdsForTag compareIdsForTag;
+  private CompareIdsForSecurityTagHelper compareIdsForSecurityTagHelper;
 
   /**
    * The manager tag will check department_id set in the JWT against the department_id set in the body.
@@ -39,12 +39,12 @@ public class ManagerTagEnforcer implements TagEnforcer {
 
   private SecurityRuleResult validateRequestUrlQuery(
       HttpRequest request, Map<String, Object> claims) {
-    return compareIdsForTag.validateRequestUrlQuery(request, claims, DEPARTMENT_ID);
+    return compareIdsForSecurityTagHelper.validateRequestUrlQuery(request, claims, DEPARTMENT_ID);
   }
 
   private SecurityRuleResult validateRequestBody(
       HttpRequest request, Map<String, Object> claims) {
-    return compareIdsForTag.validateRequestBody(request, claims, DEPARTMENT_ID, MANAGER);
+    return compareIdsForSecurityTagHelper.validateRequestBody(request, claims, DEPARTMENT_ID, MANAGER);
   }
 
 }

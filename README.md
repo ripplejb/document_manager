@@ -3,7 +3,7 @@
 Here we have implemented a scalable Security Policy by implementing custom [SecurityRule](https://micronaut-projects.github.io/micronaut-security/1.2.x/guide/#securityRule) that Micronauts framework provides.
 
 #### Scopes:
-We defined scopes for each user role and security policy. The format of a scope is **Tag**:**Privilege**.
+We defined scopes for each user role and security policy. The format of a scope is **Tag**:**Privilege**. For example, **executive**:**document.read** where **executive** is a tag and **document.read** is a privilege. 
 
 ##### Tag
 The tag indicates limit of resource that a user can access or perform action on. For example, **executive**:**document.read** can view any document from any department. However, **manager**:**document.read** can view document from only the department (s)he belong to.

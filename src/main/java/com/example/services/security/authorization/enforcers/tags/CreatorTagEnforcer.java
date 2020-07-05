@@ -1,24 +1,22 @@
 package com.example.services.security.authorization.enforcers.tags;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.services.security.authorization.enforcers.tags.helper.CompareIdsForTag;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.rules.SecurityRuleResult;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 @Singleton
 public class CreatorTagEnforcer implements TagEnforcer {
 
-  private static final String DESIGNATION = "designation";
   private static final String CREATOR = "creator";
   private static final String CREATOR_ID = "creatorId";
-  private static final String SUBJECT_ID = "sub";
+
+  @Inject
+  private CompareIdsForTag compareIdsForTag;
 
   /**
    * The creator tag will check creator_id set in the JWT against the creator_id set in the body.
@@ -41,45 +39,12 @@ public class CreatorTagEnforcer implements TagEnforcer {
 
   private SecurityRuleResult validateRequestUrlQuery(
       HttpRequest request, Map<String, Object> claims) {
-    if (request.getParameters().contains(CREATOR_ID)) {
-      UUID creatorId = UUID.fromString(request.getParameters().asMap().get(CREATOR_ID).toString());
-      if (creatorId.equals(UUID.fromString(claims.get(SUBJECT_ID).toString()))) {
-        return SecurityRuleResult.ALLOWED;
-      }
-    }
-    return SecurityRuleResult.REJECTED;
+    return compareIdsForTag.validateRequestUrlQuery(request, claims, CREATOR_ID);
   }
 
   private SecurityRuleResult validateRequestBody(
       HttpRequest request, Map<String, Object> claims) {
-    if (claims.containsKey(DESIGNATION)) {
-      if (request.getBody().isEmpty()) {
-        return SecurityRuleResult.REJECTED;
-      }
-      if (designationIsNotCreator(claims.get(DESIGNATION).toString())) {
-        return SecurityRuleResult.REJECTED;
-      }
-      UUID creatorId = UUID.fromString(claims.get(SUBJECT_ID).toString());
-
-      Optional<String> body = request.getBody(String.class);
-      if (body.isEmpty()) {
-        return SecurityRuleResult.UNKNOWN;
-      }
-      ObjectMapper objectMapper = new ObjectMapper();
-      try {
-        JsonNode jsonNode = objectMapper.readTree(body.get());
-        if (creatorId.equals(UUID.fromString(jsonNode.get(CREATOR_ID).asText()))) {
-          return SecurityRuleResult.ALLOWED;
-        }
-      } catch (JsonProcessingException e) {
-        return SecurityRuleResult.UNKNOWN;
-      }
-
-    }
-    return SecurityRuleResult.REJECTED;
+    return compareIdsForTag.validateRequestBody(request, claims, CREATOR_ID, CREATOR);
   }
 
-  private Boolean designationIsNotCreator(String designation) {
-    return !designation.equals(CREATOR);
-  }
 }
